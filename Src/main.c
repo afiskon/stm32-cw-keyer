@@ -99,10 +99,10 @@ CwSend_t lastSent = CW_SEND_NONE;
 CwSend_t nextSend = CW_SEND_NONE;
 
 void changeKeyerSpeed(uint32_t adc_value) {
-	int8_t speedWPM = 10 + (4096-adc_value)*25/4096;
-	// 50 is the length in dits of "PARIS "
-	// see https://morsecode.world/international/timing.html
-	ditTimeMs = 60*1000/(50*speedWPM);
+    int8_t speedWPM = 10 + (4096-adc_value)*25/4096;
+    // 50 is the length in dits of "PARIS "
+    // see https://morsecode.world/international/timing.html
+    ditTimeMs = 60*1000/(50*speedWPM);
 }
 
 void keyDown() {
@@ -162,23 +162,23 @@ void processIambicKeyerLogic(uint32_t now, bool ditPressed, bool dahPressed) {
 
 
 void init() {
-	keyUp();
+    keyUp();
     HAL_ADC_Start(&hadc);
 }
 
 void loop() {
-	uint32_t adc_value;
+    uint32_t adc_value;
     bool ditPressed = buttonDitPressed();
     bool dahPressed = buttonDahPressed();
     uint32_t now = HAL_GetTick();
 
-	processIambicKeyerLogic(now, ditPressed, dahPressed);
+    processIambicKeyerLogic(now, ditPressed, dahPressed);
 
-	HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
-	adc_value = HAL_ADC_GetValue(&hadc);
-	changeKeyerSpeed(adc_value);
+    HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
+    adc_value = HAL_ADC_GetValue(&hadc);
+    changeKeyerSpeed(adc_value);
 
-	HAL_Delay(LOOP_DELAY);
+    HAL_Delay(LOOP_DELAY);
 }
 
 /* USER CODE END 0 */
