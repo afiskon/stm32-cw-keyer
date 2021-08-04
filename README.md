@@ -3,7 +3,7 @@ Simple embeddable CW Keyer (Elekey-B type).
 
 Pinout:
 
-- PA0: speed control
+- PA0: speed control (about 10-35 WPM)
 - PA1: dit / straight key input
 - PA2: dah input
 - PA3: output
