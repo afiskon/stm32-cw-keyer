@@ -4,8 +4,8 @@ Simple embeddable CW Keyer (Elekey-B type).
 Pinout:
 
 - PA0: speed control
-- PA1: dit
-- PA2: dah
+- PA1: dit / straight key input
+- PA2: dah input
 - PA3: output
 - PA9: pull to GND for straight key mode
 
