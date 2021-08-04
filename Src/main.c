@@ -121,6 +121,18 @@ bool buttonDahPressed() {
     return (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_2) == GPIO_PIN_RESET);
 }
 
+bool iambicBypass() {
+    return (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_9) == GPIO_PIN_RESET);
+}
+
+void processStraightKeyerLogic(bool pressed) {
+    if(pressed) {
+        keyDown();
+    } else {
+        keyUp();
+    }
+}
+
 void processIambicKeyerLogic(uint32_t now, bool ditPressed, bool dahPressed) {
     if(isSending && (now >= sendFinish)) {
         keyUp();
@@ -159,8 +171,6 @@ void processIambicKeyerLogic(uint32_t now, bool ditPressed, bool dahPressed) {
     }
 }
 
-
-
 void init() {
     keyUp();
     HAL_ADC_Start(&hadc);
@@ -172,7 +182,11 @@ void loop() {
     bool dahPressed = buttonDahPressed();
     uint32_t now = HAL_GetTick();
 
-    processIambicKeyerLogic(now, ditPressed, dahPressed);
+    if(iambicBypass()) {
+        processStraightKeyerLogic(ditPressed);
+    } else {
+        processIambicKeyerLogic(now, ditPressed, dahPressed);
+    }
 
     HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
     adc_value = HAL_ADC_GetValue(&hadc);
@@ -331,8 +345,8 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PA1 PA2 */
-  GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2;
+  /*Configure GPIO pins : PA1 PA2 PA9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_9;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
